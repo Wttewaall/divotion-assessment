@@ -1,4 +1,8 @@
-Page
+# Readme
+
+## Overview
+
+Home page
 header with company logo and a favorites icon showing the amount of whishlisted products
 clicking should show the list of whishlisted products
 
