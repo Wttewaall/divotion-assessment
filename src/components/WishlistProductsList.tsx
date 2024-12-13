@@ -5,7 +5,7 @@ import { ProductData } from '@/types/productData';
 import ProductCard from "./ProductCard";
 import { useWishlist } from '@/app/hooks/wishlist';
 
-export default function ProductWishList() {
+export default function WishlistProductsList() {
 
   // TODO: fetch via API route, or service
   const products = Array.from<ProductData>(mockData);

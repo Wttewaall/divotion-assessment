@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/sheet";
 import { Heart } from "lucide-react";
 import { Button } from "./ui/button";
-import ProductWishList from "./ProductWishList";
+import WishlistProductsList from "./WishlistProductsList";
 import { useWishlist } from "@/app/hooks/wishlist";
 
-export default function FavoritesSheet() {
+export default function WishlistSheet() {
   const { productIds } = useWishlist();
   const active = productIds.length > 0;
 
@@ -29,7 +29,7 @@ export default function FavoritesSheet() {
           <SheetTitle>Your saved favorites</SheetTitle>
           <SheetDescription>Manage your {productIds.length} favorites</SheetDescription>
         </SheetHeader>
-        <ProductWishList></ProductWishList>
+        <WishlistProductsList></WishlistProductsList>
       </SheetContent>
     </Sheet>
   );
