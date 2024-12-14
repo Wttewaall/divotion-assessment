@@ -20,8 +20,8 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
-  const { productIds, toggle } = useWishlist();
-  const active = productIds.includes(product.id);
+  const { isWishlisted, toggle } = useWishlist();
+  const active = isWishlisted(product.id);
   const currencyFormatter = getCurrencyFormatter();
 
   return (

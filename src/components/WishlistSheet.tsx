@@ -3,6 +3,7 @@
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -13,20 +14,23 @@ import { WishlistProductsList } from "@/components/wishlistProductsList";
 import { useWishlist } from "@/app/hooks/wishlist";
 
 export function WishlistSheet() {
-  const { productIds } = useWishlist();
-  const active = productIds.length > 0;
+  const { wishlist } = useWishlist();
+  const active = wishlist.length > 0;
 
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline">
           <Heart fill={active ? '#ff4000' : 'white'} stroke={active ? '#7a2306' : 'currentColor'} />
-          {productIds.length}
+          {wishlist.length}
+          {/* Want the amount of items instead? */}
+          {/* {wishlist.reduce((amount, item) => (amount + item.quantity), 0)} */}
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Your saved favorites</SheetTitle>
+          <SheetDescription />
         </SheetHeader>
         <WishlistProductsList />
       </SheetContent>
