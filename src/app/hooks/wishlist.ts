@@ -12,35 +12,35 @@ interface WishlistState {
 
 export const useWishlist = create<WishlistState>()((set) => ({
   productIds: getProductIds(),
-  append: (productId: number) =>
+  append: (productId) =>
     set((_state) => ({ productIds: toggle(productId, true) })),
-  remove: (productId: number) =>
+  remove: (productId) =>
     set((_state) => ({ productIds: toggle(productId, false) })),
-  toggle: (productId: number) =>
+  toggle: (productId) =>
     set((_state) => ({ productIds: toggle(productId) }))
 }));
 
 function getProductIds(): number[] {
   if (!window) return [];
-  const favoritesRaw = window?.localStorage.getItem(WISHLIST_KEY);
-  return favoritesRaw !== null ? Array.from<number>(JSON.parse(favoritesRaw)) : [];
+  const jsonData = window.localStorage.getItem(WISHLIST_KEY);
+  return jsonData !== null ? Array.from<number>(JSON.parse(jsonData)) : [];
 }
 
 function toggle(productId: number, append?: boolean): number[] {
   if (!window) return [];
-  const favorites = getProductIds();
-  const hasProduct = favorites.includes(productId);
+  const wishlist = getProductIds();
+  const hasProduct = wishlist.includes(productId);
 
   // toggle
   if (append === undefined) {
-    if (!hasProduct) favorites.push(productId);
-    else favorites.splice(favorites.indexOf(productId), 1);
+    if (!hasProduct) wishlist.push(productId);
+    else wishlist.splice(wishlist.indexOf(productId), 1);
   } else {
-    if (append && !hasProduct) favorites.push(productId);
-    else if (!append && hasProduct) favorites.splice(favorites.indexOf(productId), 1);
+    if (append && !hasProduct) wishlist.push(productId);
+    else if (!append && hasProduct) wishlist.splice(wishlist.indexOf(productId), 1);
   }
 
-  window?.localStorage.setItem(WISHLIST_KEY, JSON.stringify(favorites));
+  window.localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
 
-  return favorites;
+  return wishlist;
 }

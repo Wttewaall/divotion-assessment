@@ -5,11 +5,11 @@ type RatingProps = {
   stars?: number
 }
 
-export default function Rating({ rate, stars = 5 }: RatingProps) {
+export function Rating({ rate, stars = 5 }: RatingProps) {
   const value = Math.max(0, Math.min(rate, stars));
   const halfStars = Math.floor((value * 2));
   const wholeStars = Math.floor((halfStars/2));
-  const endHalfStar = halfStars % 2 === 1;
+  const endWithHalfStar = halfStars % 2 === 1;
 
   return (
     <div className="relative">
@@ -20,9 +20,9 @@ export default function Rating({ rate, stars = 5 }: RatingProps) {
       </div>
       <div className="absolute top-0 left-0 flex">
         {Array.from({ length: wholeStars }, (_, k) => (
-          <Star fill="yellow" strokeWidth={0} key={k} />
+          <Star fill="#f8e80b" strokeWidth={0} key={k} />
         ))}
-        { endHalfStar && <StarHalf fill="yellow" strokeWidth={0} /> }
+        { endWithHalfStar && <StarHalf fill="#f8e80b" strokeWidth={0} /> }
       </div>
     </div>
   );

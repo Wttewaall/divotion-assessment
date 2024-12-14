@@ -1,22 +1,33 @@
-"use client"
+"use client";
 
-import * as mockData from '@/app/api/products.mock.json';
-import { ProductData } from '@/types/productData';
-import ProductCard from "./ProductCard";
-import { useWishlist } from '@/app/hooks/wishlist';
+import { ProductCard } from "@/components/productCard";
+import { useWishlist } from "@/app/hooks/wishlist";
+import { Suspense, useEffect, useState } from "react";
+import { getProducts, ProductData } from "@/lib/getProducts";
 
-export default function WishlistProductsList() {
+export function WishlistProductsList() {
+  const [products, setProducts] = useState<ProductData[]>([]);
 
-  // TODO: fetch via API route, or service
-  const products = Array.from<ProductData>(mockData);
+  useEffect(() => {
+    async function loadData() {
+      setProducts(await getProducts());
+    }
+    loadData();
+  }, []);
+
   const { productIds } = useWishlist();
-  const wishedProducts = products.filter(product => productIds.includes(product.id));
+  const wishedProducts = products.filter((product) =>
+    productIds.includes(product.id)
+  );
 
   return (
     <section>
-      <h3>Wishist ({productIds.length})</h3>
       <div className="flex flex-col overflow-y-scroll max-h-100">
-        { wishedProducts.map(product => (<ProductCard key={product.id} product={product}></ProductCard>)) }
+        <Suspense fallback={<p>Loading...</p>}>
+          {wishedProducts.map((product) => (
+            <ProductCard key={product.id} product={product}></ProductCard>
+          ))}
+        </Suspense>
       </div>
     </section>
   );

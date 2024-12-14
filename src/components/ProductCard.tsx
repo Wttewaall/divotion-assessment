@@ -1,11 +1,9 @@
 "use client";
 
-import { ProductData } from "@/types/productData";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
@@ -13,14 +11,15 @@ import { Button } from "./ui/button";
 import { Heart, UserPen } from "lucide-react";
 import Image from "next/image";
 import { useWishlist } from "@/app/hooks/wishlist";
-import Rating from "./Rating";
+import { Rating } from "@/components/rating";
 import { getCurrencyFormatter } from "@/lib/currency";
+import { ProductData } from "@/types/productData";
 
 type ProductCardProps = {
   product: ProductData;
 };
 
-export default function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product }: ProductCardProps) {
   const { productIds, toggle } = useWishlist();
   const active = productIds.includes(product.id);
   const currencyFormatter = getCurrencyFormatter();
@@ -40,7 +39,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="absolute top-2 right-2 p-5 m-0"
           onClick={() => toggle(product.id)}
         >
-          <Heart fill={active ? "red" : "white"}></Heart>
+          <Heart
+            fill={active ? "#ff4000" : "white"}
+            stroke={active ? "#7a2306" : "currentColor"}
+          />
         </Button>
 
         <CardTitle className="line-clamp-3 h-12">{product.title}</CardTitle>
@@ -52,16 +54,15 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       <CardContent>
         <div className="mb-4 font-semibold">
-          { currencyFormatter.format(product.price) }
+          {currencyFormatter.format(product.price)}
         </div>
         <div className="flex gap-5">
-          <Rating rate={product.rating.rate}></Rating>
+          <Rating rate={product.rating.rate} />
           <small className="flex gap-2">
             <UserPen /> {product.rating.count}
           </small>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between"></CardFooter>
     </Card>
   );
 }
