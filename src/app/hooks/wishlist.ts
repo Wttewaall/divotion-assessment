@@ -36,7 +36,7 @@ export const useWishlist = create<WishlistState>()((set) => ({
 }));
 
 function getWishlist(): WishlistItem[] {
-  if (!window) return [];
+  if (typeof window === "undefined") return [];
   const jsonData = window.localStorage.getItem(WISHLIST_KEY);
   return jsonData !== null ? Array.from<WishlistItem>(JSON.parse(jsonData)) : [];
 }
@@ -52,7 +52,8 @@ function getItem(productId: number): WishlistItem | undefined {
 }
 
 function toggleItem(productId: number, append?: boolean): WishlistItem[] {
-  if (!window) return [];
+  if (typeof window === "undefined") return [];
+
   const wishlist = getWishlist();
   const productIndex = wishlist.findIndex((item) => item.id === productId);
   const hasProduct = productIndex > -1;
@@ -72,6 +73,8 @@ function toggleItem(productId: number, append?: boolean): WishlistItem[] {
 }
 
 function modifyQuantity(productId: number, mode: 'increment' | 'decrement' | 'change', amount: number) {
+  if (typeof window === "undefined") return [];
+  
   const wishlist = getWishlist();
   const productIndex = wishlist.findIndex((item) => item.id === productId);
   const hasProduct = productIndex > -1;
