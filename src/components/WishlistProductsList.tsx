@@ -15,9 +15,9 @@ export function WishlistProductsList() {
     loadData();
   }, []);
 
-  const { productIds } = useWishlist();
+  const { wishlist } = useWishlist();
   const wishedProducts = products.filter((product) =>
-    productIds.includes(product.id)
+    wishlist.find((item) => item.id === product.id)
   );
 
   return (
