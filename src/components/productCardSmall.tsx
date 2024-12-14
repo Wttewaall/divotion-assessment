@@ -2,16 +2,13 @@
 
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { Heart, UserPen } from "lucide-react";
+import { Heart } from "lucide-react";
 import Image from "next/image";
 import { useWishlist } from "@/app/hooks/wishlist";
-import { Rating } from "@/components/rating";
 import { getCurrencyFormatter } from "@/lib/currency";
 import { ProductData } from "@/lib/getProducts";
 
@@ -19,20 +16,20 @@ type ProductCardProps = {
   product: ProductData;
 };
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCardSmall({ product }: ProductCardProps) {
   const { productIds, toggle } = useWishlist();
   const active = productIds.includes(product.id);
   const currencyFormatter = getCurrencyFormatter();
 
   return (
     <Card>
-      <CardHeader className="relative">
+      <CardHeader className="flex flex-row gap-5 relative">
         <Image
           src={product.image}
-          width={235}
-          height={200}
+          width={80}
+          height={114}
           alt={product.title}
-          className="h-[200px] object-contain mb-4"
+          className="object-contain"
         />
         <Button
           variant="outline"
@@ -45,24 +42,13 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </Button>
 
-        <CardTitle className="line-clamp-3 h-12">{product.title}</CardTitle>
-        <em>{product.category}</em>
-        <CardDescription className="line-clamp-3">
-          {product.description}
-        </CardDescription>
+        <div className="flex flex-col flex-grow pt-8">
+          <CardTitle>{product.title}</CardTitle>
+          <div className="mb-4 font-semibold">
+            {currencyFormatter.format(product.price)}
+          </div>
+        </div>
       </CardHeader>
-
-      <CardContent>
-        <div className="mb-4 font-semibold">
-          {currencyFormatter.format(product.price)}
-        </div>
-        <div className="flex gap-5">
-          <Rating rate={product.rating.rate} />
-          <small className="flex gap-2">
-            <UserPen /> {product.rating.count}
-          </small>
-        </div>
-      </CardContent>
     </Card>
   );
 }

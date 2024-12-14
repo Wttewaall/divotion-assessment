@@ -1,9 +1,9 @@
 "use client";
 
-import { ProductCard } from "@/components/productCard";
 import { useWishlist } from "@/app/hooks/wishlist";
 import { Suspense, useEffect, useState } from "react";
 import { getProducts, ProductData } from "@/lib/getProducts";
+import { ProductCardSmall } from "./productCardSmall";
 
 export function WishlistProductsList() {
   const [products, setProducts] = useState<ProductData[]>([]);
@@ -21,14 +21,12 @@ export function WishlistProductsList() {
   );
 
   return (
-    <section>
-      <div className="flex flex-col overflow-y-scroll max-h-100">
-        <Suspense fallback={<p>Loading...</p>}>
-          {wishedProducts.map((product) => (
-            <ProductCard key={product.id} product={product}></ProductCard>
-          ))}
-        </Suspense>
-      </div>
+    <section className="flex flex-col gap-2 overflow-y-scroll h-full">
+      <Suspense fallback={<p>Loading...</p>}>
+        {wishedProducts.map((product) => (
+          <ProductCardSmall key={product.id} product={product} />
+        ))}
+      </Suspense>
     </section>
   );
 }
