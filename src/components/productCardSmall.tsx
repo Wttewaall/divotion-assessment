@@ -8,7 +8,7 @@ import {
 import { Button } from "./ui/button";
 import { Heart, Minus, Plus } from "lucide-react";
 import Image from "next/image";
-import { useWishlist } from "@/app/hooks/wishlist";
+import { useWishlist } from "@/hooks/wishlist";
 import { getCurrencyFormatter } from "@/lib/currency";
 import { ProductData } from "@/lib/getProducts";
 import { Input } from "@/components/ui/input"

@@ -11,7 +11,7 @@ import {
 import { Heart } from "lucide-react";
 import { Button } from "./ui/button";
 import { WishlistProductsList } from "@/components/wishlistProductsList";
-import { useWishlist } from "@/app/hooks/wishlist";
+import { useWishlist } from "@/hooks/wishlist";
 
 export function WishlistSheet() {
   const { wishlist } = useWishlist();

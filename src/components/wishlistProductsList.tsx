@@ -1,6 +1,6 @@
 "use client";
 
-import { useWishlist } from "@/app/hooks/wishlist";
+import { useWishlist } from "@/hooks/wishlist";
 import { Suspense, useEffect, useState } from "react";
 import { getProducts, ProductData } from "@/lib/getProducts";
 import { ProductCardSmall } from "./productCardSmall";
