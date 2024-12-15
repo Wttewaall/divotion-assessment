@@ -1,3 +1,5 @@
+"use client"
+
 import { Star, StarHalf } from "lucide-react";
 
 type RatingProps = {

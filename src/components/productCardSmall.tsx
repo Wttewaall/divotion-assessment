@@ -39,8 +39,8 @@ export function ProductCardSmall({ product }: ProductCardProps) {
           onClick={() => toggle(product.id)}
         >
           <Heart
-            fill={active ? "#ff4000" : "white"}
-            stroke={active ? "#7a2306" : "currentColor"}
+            fill={active ? "#ff4000" : "#ffffff"}
+            stroke={active ? "#7a2306" : "#09090b"}
           />
         </Button>
 

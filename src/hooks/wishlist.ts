@@ -36,9 +36,7 @@ export const useWishlist = create<WishlistState>()((set) => ({
 }));
 
 function getWishlist(): WishlistItem[] {
-  if (typeof window === "undefined") return [];
-  const jsonData = window.localStorage.getItem(WISHLIST_KEY);
-  return jsonData !== null ? Array.from<WishlistItem>(JSON.parse(jsonData)) : [];
+  return retrieve();
 }
 
 function isWishlisted(productId: number): boolean {
@@ -52,8 +50,6 @@ function getItem(productId: number): WishlistItem | undefined {
 }
 
 function toggleItem(productId: number, append?: boolean): WishlistItem[] {
-  if (typeof window === "undefined") return [];
-
   const wishlist = getWishlist();
   const productIndex = wishlist.findIndex((item) => item.id === productId);
   const hasProduct = productIndex > -1;
@@ -67,14 +63,12 @@ function toggleItem(productId: number, append?: boolean): WishlistItem[] {
     else if (!append && hasProduct) wishlist.splice(productIndex, 1);
   }
 
-  window.localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
+  store(wishlist);
 
   return wishlist;
 }
 
 function modifyQuantity(productId: number, mode: 'increment' | 'decrement' | 'change', amount: number) {
-  if (typeof window === "undefined") return [];
-  
   const wishlist = getWishlist();
   const productIndex = wishlist.findIndex((item) => item.id === productId);
   const hasProduct = productIndex > -1;
@@ -92,7 +86,29 @@ function modifyQuantity(productId: number, mode: 'increment' | 'decrement' | 'ch
   // limit to a minimum of 0
   wishlist[productIndex].quantity = Math.max(0, quantity);
 
-  window.localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
+  store(wishlist);
 
   return wishlist;
+}
+
+// ---- These methods can be changed to use a different data storage solution ----
+
+function retrieve(): WishlistItem[] {
+  let items: WishlistItem[] = [];
+
+  try {
+    const jsonData = window.localStorage.getItem(WISHLIST_KEY);
+    if (jsonData !== null) items = Array.from<WishlistItem>(JSON.parse(jsonData));
+    } catch (error) {
+      console.warn('Unable to get data from localStorage or parse json string');
+    }
+  return items;
+}
+
+function store(data: WishlistItem[]) {
+  try {
+    window.localStorage.setItem(WISHLIST_KEY, JSON.stringify(data));
+  } catch(error) {
+    console.warn('Unable to store json to localStorage');
+  }
 }

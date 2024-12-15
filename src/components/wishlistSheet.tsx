@@ -21,7 +21,11 @@ export function WishlistSheet() {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="outline">
-          <Heart fill={active ? '#ff4000' : 'white'} stroke={active ? '#7a2306' : 'currentColor'} />
+          {/* FIXME Hydration failure issue here */}
+          <Heart
+            fill={active ? "#ff4000" : "#ffffff"}
+            stroke={active ? "#7a2306" : "#09090b"}
+          />
           {wishlist.length}
           {/* Want the amount of items instead? */}
           {/* {wishlist.reduce((amount, item) => (amount + item.quantity), 0)} */}
