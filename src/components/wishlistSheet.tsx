@@ -9,7 +9,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Heart } from "lucide-react";
-import { Button } from "./ui/button";
 import { WishlistProductsList } from "@/components/wishlistProductsList";
 import { useWishlist } from "@/hooks/wishlist";
 
@@ -19,9 +18,8 @@ export function WishlistSheet() {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline">
-          {/* FIXME Hydration failure issue here */}
+      <SheetTrigger className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 dark:focus-visible:ring-zinc-300 border border-zinc-200 bg-white shadow-sm hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 px-3 py-2">
+          Favorites
           <Heart
             fill={active ? "#ff4000" : "#ffffff"}
             stroke={active ? "#7a2306" : "#09090b"}
@@ -29,7 +27,6 @@ export function WishlistSheet() {
           {wishlist.length}
           {/* Want the amount of items instead? */}
           {/* {wishlist.reduce((amount, item) => (amount + item.quantity), 0)} */}
-        </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
