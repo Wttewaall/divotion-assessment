@@ -41,7 +41,7 @@ export function ProductCardSmall({ product }: ProductCardProps) {
             </Button>
             <Input
               type="tel"
-              className="text-center rounded-none"
+              className="z-0 text-center rounded-none"
               value={wishedProduct?.quantity}
               onFocus={(e) => e.target.select()}
               onChange={(e) => change(product.id, parseInt(e.target.value))}
