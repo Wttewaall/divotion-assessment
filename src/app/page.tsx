@@ -1,5 +1,5 @@
-import { ProductsList } from "@/components/productsList";
-import { HeaderTop } from "@/components/headerTop";
+import { ProductsList } from '@/components/productsList';
+import { HeaderTop } from '@/components/headerTop';
 
 export default async function Home() {
   return (

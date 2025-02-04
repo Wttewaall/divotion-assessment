@@ -1,16 +1,16 @@
-"use client"
+'use client';
 
-import { Star, StarHalf } from "lucide-react";
+import { Star, StarHalf } from 'lucide-react';
 
 type RatingProps = {
-  rate: number
-  stars?: number
-}
+  rate: number;
+  stars?: number;
+};
 
 export function Rating({ rate, stars = 5 }: RatingProps) {
   const value = Math.max(0, Math.min(rate, stars));
-  const halfStars = Math.floor((value * 2));
-  const wholeStars = Math.floor((halfStars/2));
+  const halfStars = Math.floor(value * 2);
+  const wholeStars = Math.floor(halfStars / 2);
   const endWithHalfStar = halfStars % 2 === 1;
 
   return (
@@ -24,7 +24,7 @@ export function Rating({ rate, stars = 5 }: RatingProps) {
         {Array.from({ length: wholeStars }, (_, k) => (
           <Star fill="#f8e80b" strokeWidth={0} key={k} />
         ))}
-        { endWithHalfStar && <StarHalf fill="#f8e80b" strokeWidth={0} /> }
+        {endWithHalfStar && <StarHalf fill="#f8e80b" strokeWidth={0} />}
       </div>
     </div>
   );

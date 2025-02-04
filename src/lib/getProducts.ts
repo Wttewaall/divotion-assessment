@@ -1,4 +1,4 @@
-import * as mockProducts from "@/lib/products.mock.json";
+import * as mockProducts from '@/lib/products.mock.json';
 
 export type ProductData = {
   id: number;

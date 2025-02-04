@@ -1,56 +1,54 @@
-"use client"
-import { create } from "zustand";
+'use client';
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 const WISHLIST_KEY = 'wishlist';
 
-type WishlistItem = { id: number, quantity: number }
+export type WishlistItem = { id: number; quantity: number };
 
 interface WishlistState {
-  wishlist: WishlistItem[]
-  isWishlisted: (productId: number) => boolean
-  getItem: (productId: number) => WishlistItem | undefined
-  append: (productId: number) => void
-  remove: (productId: number) => void
-  toggle: (productId: number) => void
-  increment: (productId: number, amount?: number) => void
-  decrement: (productId: number, amount?: number) => void
-  change: (productId: number, amount: number) => void
+  wishlist: WishlistItem[];
+  isWishlisted: (productId: number) => boolean;
+  getItem: (productId: number) => WishlistItem | undefined;
+  append: (productId: number) => void;
+  remove: (productId: number) => void;
+  toggle: (productId: number) => void;
+  increment: (productId: number, amount?: number | string) => void;
+  decrement: (productId: number, amount?: number | string) => void;
+  change: (productId: number, amount: number | string) => void;
 }
 
-export const useWishlist = create<WishlistState>()((set) => ({
-  wishlist: getWishlist(),
-  isWishlisted: (productId: number) => isWishlisted(productId),
-  getItem: (productId) => getItem(productId),
-  append: (productId) =>
-    set((_state) => ({ wishlist: toggleItem(productId, true) })),
-  remove: (productId) =>
-    set((_state) => ({ wishlist: toggleItem(productId, false) })),
-  toggle: (productId) =>
-    set((_state) => ({ wishlist: toggleItem(productId) })),
-  increment: (productId, amount = 1) =>
-    set((_state) => ({ wishlist: modifyQuantity(productId, 'increment', amount = 1) })),
-  decrement: (productId, amount = 1) =>
-    set((_state) => ({ wishlist: modifyQuantity(productId, 'decrement', amount = 1) })),
-  change: (productId, amount = 1) =>
-    set((_state) => ({ wishlist: modifyQuantity(productId, 'change', amount) })),
-}));
+export const useWishlist = create<WishlistState>()(
+  persist(
+    (set, get) => ({
+      wishlist: [],
+      isWishlisted: (productId: number) => isWishlisted(get().wishlist, productId),
+      getItem: (productId) => getItem(get().wishlist, productId),
+      append: (productId) => set({ wishlist: toggleItem(get().wishlist, productId, true) }),
+      remove: (productId) => set({ wishlist: toggleItem(get().wishlist, productId, false) }),
+      toggle: (productId) => set({ wishlist: toggleItem(get().wishlist, productId) }),
+      increment: (productId, amount = 1) =>
+        set({ wishlist: modifyQuantity(get().wishlist, productId, 'increment', amount) }),
+      decrement: (productId, amount = 1) =>
+        set({ wishlist: modifyQuantity(get().wishlist, productId, 'decrement', amount) }),
+      change: (productId, amount) => set({ wishlist: modifyQuantity(get().wishlist, productId, 'change', amount) }),
+    }),
+    {
+      name: WISHLIST_KEY,
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
 
-function getWishlist(): WishlistItem[] {
-  return retrieve();
+function isWishlisted(wishlist: WishlistItem[], productId: number): boolean {
+  return wishlist.findIndex((item) => item.id === productId) > -1;
 }
 
-function isWishlisted(productId: number): boolean {
-  const wishlist = getWishlist();
-  return wishlist.findIndex(item => item.id === productId) > -1;
+function getItem(wishlist: WishlistItem[], productId: number): WishlistItem | undefined {
+  return wishlist.find((item) => item.id === productId);
 }
 
-function getItem(productId: number): WishlistItem | undefined {
-  const wishlist = getWishlist();
-  return wishlist.find(item => item.id === productId);
-}
-
-function toggleItem(productId: number, append?: boolean): WishlistItem[] {
-  const wishlist = getWishlist();
+function toggleItem(wishlist: WishlistItem[], productId: number, append?: boolean): WishlistItem[] {
   const productIndex = wishlist.findIndex((item) => item.id === productId);
   const hasProduct = productIndex > -1;
 
@@ -63,52 +61,38 @@ function toggleItem(productId: number, append?: boolean): WishlistItem[] {
     else if (!append && hasProduct) wishlist.splice(productIndex, 1);
   }
 
-  store(wishlist);
-
   return wishlist;
 }
 
-function modifyQuantity(productId: number, mode: 'increment' | 'decrement' | 'change', amount: number) {
-  const wishlist = getWishlist();
+function modifyQuantity(
+  wishlist: WishlistItem[],
+  productId: number,
+  mode: 'increment' | 'decrement' | 'change',
+  amount: number | string
+) {
   const productIndex = wishlist.findIndex((item) => item.id === productId);
   const hasProduct = productIndex > -1;
-  
+
+  // validate input: strip out all characters other than digits [0-9], default to 0
+  const value = parseInt(amount.toString().replace(/\D/, '')) || 0;
+
   if (!hasProduct) return wishlist;
 
   let quantity = wishlist[productIndex].quantity;
 
-  switch(mode) {
-    case 'increment': quantity += amount; break;
-    case 'decrement': quantity -= amount; break;
-    default: quantity = amount;
+  switch (mode) {
+    case 'increment':
+      quantity += value;
+      break;
+    case 'decrement':
+      quantity -= value;
+      break;
+    default:
+      quantity = value;
   }
 
   // limit to a minimum of 0
   wishlist[productIndex].quantity = Math.max(0, quantity);
 
-  store(wishlist);
-
   return wishlist;
-}
-
-// ---- These methods can be changed to use a different data storage solution ----
-
-function retrieve(): WishlistItem[] {
-  let items: WishlistItem[] = [];
-
-  try {
-    const jsonData = window.localStorage.getItem(WISHLIST_KEY);
-    if (jsonData !== null) items = Array.from<WishlistItem>(JSON.parse(jsonData));
-    } catch (error) {
-      console.warn('Unable to get data from localStorage or parse json string');
-    }
-  return items;
-}
-
-function store(data: WishlistItem[]) {
-  try {
-    window.localStorage.setItem(WISHLIST_KEY, JSON.stringify(data));
-  } catch(error) {
-    console.warn('Unable to store json to localStorage');
-  }
 }
