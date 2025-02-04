@@ -23,7 +23,12 @@ export function ProductCardSmall({ product }: ProductCardProps) {
     <Card>
       <CardHeader className="relative flex flex-row gap-5">
         <Image src={product.image} width={80} height={114} alt={product.title} className="object-contain" />
-        <Button variant="outline" className="absolute p-5 m-0 top-2 right-2" onClick={() => toggle(product.id)}>
+        <Button
+          variant="outline"
+          className="absolute p-5 m-0 top-2 right-2"
+          onClick={() => toggle(product.id)}
+          aria-label="favorite button"
+        >
           <Heart fill={active ? '#ff4000' : '#ffffff'} stroke={active ? '#7a2306' : '#09090b'} />
         </Button>
 

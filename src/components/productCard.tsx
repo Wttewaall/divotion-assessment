@@ -30,7 +30,12 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           className="h-[200px] object-contain mb-4"
           priority={priority}
         />
-        <Button variant="outline" className="absolute p-5 m-0 top-2 right-2" onClick={() => toggle(product.id)}>
+        <Button
+          variant="outline"
+          className="absolute p-5 m-0 top-2 right-2"
+          onClick={() => toggle(product.id)}
+          aria-label="favorite button"
+        >
           <Heart fill={active ? '#ff4000' : '#ffffff'} stroke={active ? '#7a2306' : '#09090b'} />
         </Button>
 
