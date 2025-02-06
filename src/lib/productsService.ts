@@ -10,7 +10,11 @@ export type ProductData = {
   rating: { rate: number; count: number };
 };
 
-export async function getProducts(): Promise<ProductData[]> {
+export function getProducts(): ProductData[] {
+  return Array.from<ProductData>(mockProducts);
+}
+
+export async function loadProducts(): Promise<ProductData[]> {
   // Return data from a json file
   return new Promise((resolve, _reject) => {
     resolve(Array.from<ProductData>(mockProducts));

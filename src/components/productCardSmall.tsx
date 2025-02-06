@@ -1,24 +1,35 @@
 'use client';
 
-import { Card, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Heart, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
-import { useWishlist } from '@/hooks/wishlist';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Heart, Minus, Plus } from 'lucide-react';
 import { getCurrencyFormatter } from '@/lib/currency';
-import { ProductData } from '@/lib/getProducts';
+import { ProductData } from '@/lib/productsService';
 import { Input } from '@/components/ui/input';
 
 type ProductCardProps = {
   product: ProductData;
+  active: boolean;
+  amount?: number;
+  onFavoriteClick: () => void;
+  onIncrementClick: () => void;
+  onInputChange: (value: string) => void;
+  onDecrementClick: () => void;
 };
 
-export function ProductCardSmall({ product }: ProductCardProps) {
-  const { getItem, toggle, increment, decrement, change } = useWishlist();
-  const wishedProduct = getItem(product.id);
-  const active = !!wishedProduct;
+export function ProductCardSmall({
+  product,
+  active,
+  amount,
+  onFavoriteClick,
+  onIncrementClick,
+  onInputChange,
+  onDecrementClick,
+}: ProductCardProps) {
   const currencyFormatter = getCurrencyFormatter();
 
+  console.log('ProductCardSmall', product.id);
   return (
     <Card>
       <CardHeader className="relative flex flex-row gap-5">
@@ -26,7 +37,7 @@ export function ProductCardSmall({ product }: ProductCardProps) {
         <Button
           variant="outline"
           className="absolute p-5 m-0 top-2 right-2"
-          onClick={() => toggle(product.id)}
+          onClick={() => onFavoriteClick()}
           aria-label="favorite button"
         >
           <Heart fill={active ? '#ff4000' : '#ffffff'} stroke={active ? '#7a2306' : '#09090b'} />
@@ -36,17 +47,28 @@ export function ProductCardSmall({ product }: ProductCardProps) {
           <CardTitle>{product.title}</CardTitle>
           <div className="mb-4 font-semibold">{currencyFormatter.format(product.price)}</div>
           <div className="flex">
-            <Button variant="secondary" className="rounded-none rounded-l-md" onClick={() => decrement(product.id)}>
+            <Button
+              variant="secondary"
+              className="rounded-none rounded-l-md"
+              aria-label="decrement"
+              onClick={() => onDecrementClick()}
+            >
               <Minus />
             </Button>
             <Input
               type="tel"
               className="z-0 text-center rounded-none"
-              value={wishedProduct?.quantity}
+              value={amount || '0'}
+              aria-label="amount"
               onFocus={(e) => e.target.select()}
-              onChange={(e) => change(product.id, parseInt(e.target.value))}
+              onChange={(e) => onInputChange(e.target.value)}
             />
-            <Button variant="secondary" className="rounded-none rounded-r-md" onClick={() => increment(product.id)}>
+            <Button
+              variant="secondary"
+              className="rounded-none rounded-r-md"
+              aria-label="increment"
+              onClick={() => onIncrementClick()}
+            >
               <Plus />
             </Button>
           </div>

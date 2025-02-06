@@ -1,23 +1,24 @@
 'use client';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Heart, UserPen } from 'lucide-react';
 import Image from 'next/image';
-import { useWishlist } from '@/hooks/wishlist';
 import { Rating } from '@/components/rating';
 import { getCurrencyFormatter } from '@/lib/currency';
-import { ProductData } from '@/lib/getProducts';
+import { ProductData } from '@/lib/productsService';
 
 type ProductCardProps = {
   product: ProductData;
+  isWishlisted: boolean;
+  onFavoriteClick: (productId: number) => void;
   priority?: boolean;
 };
 
-export function ProductCard({ product, priority = false }: ProductCardProps) {
-  const { isWishlisted, toggle } = useWishlist();
-  const active = isWishlisted(product.id);
+export function ProductCard({ product, isWishlisted, onFavoriteClick, priority = false }: ProductCardProps) {
   const currencyFormatter = getCurrencyFormatter();
+
+  console.log('ProductCard', product.id);
 
   return (
     <Card>
@@ -33,10 +34,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         <Button
           variant="outline"
           className="absolute p-5 m-0 top-2 right-2"
-          onClick={() => toggle(product.id)}
+          onClick={() => onFavoriteClick(product.id)}
           aria-label="favorite button"
         >
-          <Heart fill={active ? '#ff4000' : '#ffffff'} stroke={active ? '#7a2306' : '#09090b'} />
+          <Heart fill={isWishlisted ? '#ff4000' : '#ffffff'} stroke={isWishlisted ? '#7a2306' : '#09090b'} />
         </Button>
 
         <CardTitle className="h-12 line-clamp-3">{product.title}</CardTitle>

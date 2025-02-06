@@ -1,28 +1,36 @@
 'use client';
 
 import { ProductCard } from '@/components/productCard';
-import { getProducts, ProductData } from '@/lib/getProducts';
-import { Suspense, useEffect, useState } from 'react';
+import { useWishlist } from '@/hooks/wishlist';
+import { getProducts, loadProducts, ProductData } from '@/lib/productsService';
+import { useEffect, useState } from 'react';
 
 export function ProductsList() {
   const [products, setProducts] = useState<ProductData[]>([]);
+  const { isWishlisted, toggle } = useWishlist();
 
+  // load products in an effect to fix Hydration error
   useEffect(() => {
-    async function loadData() {
-      setProducts(await getProducts());
-    }
-    loadData();
+    setProducts(getProducts());
+    // async function loadData() {
+    //   setProducts(await loadProducts());
+    // }
+    // loadData();
   }, []);
 
+  console.log('ProductsList');
+
   return (
-    <section>
-      <Suspense fallback={<p>Loading...</p>}>
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {products.map((product, index) => (
-            <ProductCard key={product.id} product={product} priority={index < 6}></ProductCard>
-          ))}
-        </div>
-      </Suspense>
+    <section data-testid="products-list" className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {products.map((product, index) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          isWishlisted={isWishlisted(product.id)}
+          onFavoriteClick={toggle}
+          priority={index < 6}
+        ></ProductCard>
+      ))}
     </section>
   );
 }

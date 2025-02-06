@@ -6,7 +6,7 @@ export default function Home() {
     <>
       <HeaderTop />
       <main className="container mx-auto">
-        <h2>HELLO: {process.env.HELLO}</h2>
+        {/* <h2>HELLO: {process.env.HELLO}</h2> */}
         <ProductsList />
       </main>
     </>
