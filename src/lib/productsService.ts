@@ -10,14 +10,15 @@ export type ProductData = {
   rating: { rate: number; count: number };
 };
 
+// Return data from a json file
 export function getProducts(): ProductData[] {
   return Array.from<ProductData>(mockProducts);
 }
 
+// Load data from a json file and return in a promise
 export async function loadProducts(): Promise<ProductData[]> {
-  // Return data from a json file
   return new Promise((resolve, _reject) => {
-    resolve(Array.from<ProductData>(mockProducts));
+    resolve(getProducts());
   });
 
   // Here we can use different loading methods, like fetch to load from fakestoreapi.com

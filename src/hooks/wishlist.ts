@@ -1,4 +1,5 @@
 'use client';
+import { toUintValue } from '@/lib/formatters';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
@@ -74,7 +75,7 @@ function modifyQuantity(
   const hasProduct = productIndex > -1;
 
   // validate input: strip out all characters other than digits [0-9], default to 0
-  const value = parseInt(amount.toString().replace(/\D/, '')) || 0;
+  const value = toUintValue(amount.toString());
 
   if (!hasProduct) return wishlist;
 
