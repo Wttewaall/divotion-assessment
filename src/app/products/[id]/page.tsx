@@ -4,11 +4,14 @@ import { getProductById } from '@/lib/productsService';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Product, WithContext } from 'schema-dts';
 
-type PageParams = Promise<{ id: string }>;
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export default async function ProductPage(props: { params: PageParams }) {
-  const params = await props.params;
-  const product = getProductById(params.id);
+export default async function ProductPage({ params, searchParams }: Props) {
+  const id = (await params).id;
+  const product = getProductById(id);
 
   if (!product)
     return {
@@ -55,10 +58,7 @@ export default async function ProductPage(props: { params: PageParams }) {
   );
 }
 
-export async function generateMetadata(
-  { params }: { params: { id: string } },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const id = (await params).id;
   const product = getProductById(id);
 
