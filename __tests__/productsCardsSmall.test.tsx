@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { ProductCardSmall } from '@/components/productCardSmall';
+import ProductCardSmall from '@/components/productCardSmall';
 
 const product = {
   id: 1,

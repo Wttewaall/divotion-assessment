@@ -26,3 +26,8 @@ export async function loadProducts(): Promise<ProductData[]> {
   // const products = await res.json();
   // return products;
 }
+
+export const getProductById = (id: string | number | undefined): ProductData | undefined => {
+  if (id === undefined) return undefined;
+  return getProducts().find((p) => p.id === parseInt(id.toString()));
+};

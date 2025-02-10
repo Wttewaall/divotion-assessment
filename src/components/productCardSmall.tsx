@@ -3,22 +3,24 @@
 import Image from 'next/image';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Heart, Minus, Plus } from 'lucide-react';
+import { Minus, Plus } from 'lucide-react';
 import { getCurrencyFormatter } from '@/lib/currency';
 import { ProductData } from '@/lib/productsService';
 import { Input } from '@/components/ui/input';
+import { memo } from 'react';
+import FavoriteButton from './favoriteButton';
 
-type ProductCardProps = {
+interface ProductCardSmallProps {
   product: ProductData;
   active: boolean;
-  amount?: number;
-  onFavoriteClick: () => void;
+  amount: number;
+  onFavoriteClick: (id: number) => void;
   onIncrementClick: () => void;
   onInputChange: (value: string) => void;
   onDecrementClick: () => void;
-};
+}
 
-export function ProductCardSmall({
+const ProductCardSmall: React.FC<ProductCardSmallProps> = ({
   product,
   active,
   amount,
@@ -26,22 +28,20 @@ export function ProductCardSmall({
   onIncrementClick,
   onInputChange,
   onDecrementClick,
-}: ProductCardProps) {
+}) => {
   const currencyFormatter = getCurrencyFormatter();
 
-  console.log('ProductCardSmall', product.id);
+  // console.log(`Rendering ProductCardSmall: ${product.id}`);
+
   return (
     <Card>
       <CardHeader className="relative flex flex-row gap-5">
         <Image src={product.image} width={80} height={114} alt={product.title} className="object-contain" />
-        <Button
-          variant="outline"
-          className="absolute p-5 m-0 top-2 right-2"
-          onClick={() => onFavoriteClick()}
-          aria-label="favorite button"
-        >
-          <Heart fill={active ? '#ff4000' : '#ffffff'} stroke={active ? '#7a2306' : '#09090b'} />
-        </Button>
+        <FavoriteButton
+          classes="absolute p-5 top-2 right-2"
+          isActive={active}
+          onClick={() => onFavoriteClick(product.id)}
+        />
 
         <div className="flex flex-col flex-grow pt-8">
           <CardTitle>{product.title}</CardTitle>
@@ -76,4 +76,6 @@ export function ProductCardSmall({
       </CardHeader>
     </Card>
   );
-}
+};
+
+export default memo(ProductCardSmall);

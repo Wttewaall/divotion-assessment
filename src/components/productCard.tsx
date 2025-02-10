@@ -1,44 +1,47 @@
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Heart, UserPen } from 'lucide-react';
+import { UserPen } from 'lucide-react';
 import Image from 'next/image';
 import { Rating } from '@/components/rating';
 import { getCurrencyFormatter } from '@/lib/currency';
 import { ProductData } from '@/lib/productsService';
+import React, { memo } from 'react';
+import Link from 'next/link';
+import FavoriteButton from './favoriteButton';
 
-type ProductCardProps = {
+interface ProductCardProps {
   product: ProductData;
   isWishlisted: boolean;
   onFavoriteClick: (productId: number) => void;
   priority?: boolean;
-};
+  withLink?: string;
+}
 
-export function ProductCard({ product, isWishlisted, onFavoriteClick, priority = false }: ProductCardProps) {
+const ProductCard: React.FC<ProductCardProps> = ({ product, isWishlisted, onFavoriteClick, priority, withLink }) => {
   const currencyFormatter = getCurrencyFormatter();
 
-  console.log('ProductCard', product.id);
+  // console.log(`Rendering ProductCard: ${product.id}`);
 
   return (
     <Card>
       <CardHeader className="relative">
-        <Image
-          src={product.image}
-          width={235}
-          height={200}
-          alt={product.title}
-          className="h-[200px] object-contain mb-4"
-          priority={priority}
-        />
-        <Button
-          variant="outline"
-          className="absolute p-5 m-0 top-2 right-2"
+        <Link href={withLink || ''}>
+          <Image
+            src={product.image}
+            width={235}
+            height={200}
+            alt={product.title}
+            className="h-[200px] object-contain mb-4"
+            priority={priority}
+          />
+        </Link>
+
+        <FavoriteButton
+          classes="absolute p-5 top-2 right-2"
+          isActive={isWishlisted}
           onClick={() => onFavoriteClick(product.id)}
-          aria-label="favorite button"
-        >
-          <Heart fill={isWishlisted ? '#ff4000' : '#ffffff'} stroke={isWishlisted ? '#7a2306' : '#09090b'} />
-        </Button>
+        />
 
         <CardTitle className="h-12 line-clamp-3">{product.title}</CardTitle>
         <em>{product.category}</em>
@@ -56,4 +59,6 @@ export function ProductCard({ product, isWishlisted, onFavoriteClick, priority =
       </CardContent>
     </Card>
   );
-}
+};
+
+export default memo(ProductCard);
