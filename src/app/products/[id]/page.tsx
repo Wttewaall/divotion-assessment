@@ -4,15 +4,11 @@ import { getProductById } from '@/lib/productsService';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Product, WithContext } from 'schema-dts';
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
+type PageParams = Promise<{ id: string }>;
 
-export default async function ProductPage({ params }: PageProps) {
-  const { id } = params;
-  const product = getProductById(id);
+export default async function ProductPage(props: { params: PageParams }) {
+  const params = await props.params;
+  const product = getProductById(params.id);
 
   if (!product)
     return {
