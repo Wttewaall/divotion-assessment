@@ -1,6 +1,12 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  experimental: {
+    cssChunking: true,
+    inlineCss: true,
+    optimizeCss: true,
+    // useLightningcss: true,
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
