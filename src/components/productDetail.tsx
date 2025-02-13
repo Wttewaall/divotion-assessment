@@ -20,7 +20,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product }) => {
 
   useEffect(() => {
     setActive(isWishlisted(product.id));
-  }, [wishlist.length]);
+  }, [isWishlisted, wishlist.length, product.id]);
 
   const onFavoriteClick = () => {
     toggle(product.id);
