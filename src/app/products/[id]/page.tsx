@@ -2,6 +2,7 @@ import { HeaderTop } from '@/components/headerTop';
 import ProductDetail from '@/components/productDetail';
 import { getProductById, getProducts } from '@/lib/productsService';
 import type { Metadata, ResolvingMetadata } from 'next';
+import { notFound } from 'next/navigation';
 import { Product, WithContext } from 'schema-dts';
 
 // This function is called during the build (build time) to generate the static paths for the products
@@ -20,11 +21,9 @@ export default async function ProductPage({ params, searchParams }: Props) {
   const id = (await params).id;
   const product = getProductById(id);
 
-  if (!product)
-    return {
-      title: 'Product Not Found',
-      description: 'The requested product could not be found.',
-    };
+  if (!product) {
+    return notFound();
+  }
 
   const jsonLd: WithContext<Product> = {
     '@context': 'https://schema.org',
