@@ -9,8 +9,6 @@ export function WishlistProductsList() {
   const { wishlist, getItem, isWishlisted, toggle, increment, decrement, change } = useWishlist();
   const wishedProducts = products.filter((product) => wishlist.find((item) => item.id === product.id));
 
-  // console.log('WishlistProductsList');
-
   return (
     <section role="feed" className="flex flex-col h-full gap-2 overflow-y-scroll">
       {wishedProducts.map((product) => {

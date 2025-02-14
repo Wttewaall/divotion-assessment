@@ -21,8 +21,6 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, isWishlisted, onFavoriteClick, priority, withLink }) => {
   const currencyFormatter = getCurrencyFormatter();
 
-  // console.log(`Rendering ProductCard: ${product.id}`);
-
   return (
     <Card>
       <CardHeader className="relative">

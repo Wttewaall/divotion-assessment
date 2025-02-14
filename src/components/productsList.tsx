@@ -13,8 +13,6 @@ export function ProductsList() {
     setProducts(getProducts());
   }, []);
 
-  // console.log('ProductsList');
-
   return (
     <section data-testid="products-list" className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {products.map((product, index) => (

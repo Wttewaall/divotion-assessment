@@ -31,8 +31,6 @@ const ProductCardSmall: React.FC<ProductCardSmallProps> = ({
 }) => {
   const currencyFormatter = getCurrencyFormatter();
 
-  // console.log(`Rendering ProductCardSmall: ${product.id}`);
-
   return (
     <Card>
       <CardHeader className="relative flex flex-row gap-5">
