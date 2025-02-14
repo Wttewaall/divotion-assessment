@@ -1,3 +1,4 @@
+import { toISODateString } from '@/lib/date';
 import { getProducts } from '@/lib/productsService';
 import { GOOGLE_SITEMAP_LIMIT } from '@/lib/sitemaps';
 import type { MetadataRoute } from 'next';
@@ -5,8 +6,8 @@ import type { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   const products = getProducts();
   return products.slice(0, GOOGLE_SITEMAP_LIMIT).map((product) => ({
-    url: `${process.env.BASE_URL}/product/${product.id}`,
-    lastModified: new Date(),
+    url: `${process.env.BASE_URL}/products/${product.id}`,
+    lastModified: toISODateString(new Date()),
     changeFrequency: 'monthly',
     priority: 0.6,
     images: [product.image],

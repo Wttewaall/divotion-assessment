@@ -85,4 +85,8 @@ describe('ProductCardSmall Component', () => {
 
     expect(amount).toBe(0);
   });
+
+  // afterEach(() => {
+  //   vi.clearAllMocks(); // Reset all mocked calls between tests
+  // });
 });
