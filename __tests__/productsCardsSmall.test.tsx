@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterAll, beforeEach, describe, expect, test, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import ProductCardSmall from '@/components/productCardSmall';
 
@@ -86,7 +86,7 @@ describe('ProductCardSmall Component', () => {
     expect(amount).toBe(0);
   });
 
-  // afterEach(() => {
-  //   vi.clearAllMocks(); // Reset all mocked calls between tests
-  // });
+  afterAll(() => {
+    vi.clearAllMocks(); // Reset all mocked calls between tests
+  });
 });
