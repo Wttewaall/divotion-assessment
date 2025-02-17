@@ -9,7 +9,9 @@
     "start": "dotenvx run -- next start",
     "lint": "dotenvx run -- next lint",
     "test": "vitest",
-    "wdio": "wdio run ./wdio.conf.ts"
+    "wdio": "wdio run ./wdio.conf.ts",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.36.0",
@@ -27,7 +29,15 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.4",
     "@eslint/eslintrc": "^3.2.0",
+    "@storybook/addon-essentials": "^8.5.5",
+    "@storybook/addon-interactions": "^8.5.5",
+    "@storybook/addon-themes": "^8.5.5",
+    "@storybook/blocks": "^8.5.5",
+    "@storybook/nextjs": "^8.5.5",
+    "@storybook/react": "^8.5.5",
+    "@storybook/test": "^8.5.5",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@testing-library/webdriverio": "^3.2.1",
@@ -44,13 +54,20 @@
     "@wdio/spec-reporter": "^9.9.0",
     "eslint": "^9.20.1",
     "eslint-config-next": "15.1.0",
+    "eslint-plugin-storybook": "^0.11.2",
     "jsdom": "^26.0.0",
     "postcss": "^8.5.2",
+    "storybook": "^8.5.5",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.5",
     "wdio-wait-for": "^3.1.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }
