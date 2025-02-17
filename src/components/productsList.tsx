@@ -1,6 +1,7 @@
 'use client';
 
 import ProductCard from '@/components/productCard';
+import { useListRenderer } from '@/hooks/listrenderer';
 import { useWishlist } from '@/hooks/wishlist';
 import { getProducts, ProductData } from '@/lib/productsService';
 import { useEffect, useState } from 'react';
@@ -14,8 +15,8 @@ export function ProductsList() {
   }, []);
 
   return (
-    <section data-testid="products-list" className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      {products.map((product, index) => (
+    <section aria-role="section" data-testid="products-list" className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {useListRenderer(products, (product, index) => (
         <ProductCard
           key={product.id}
           product={product}
