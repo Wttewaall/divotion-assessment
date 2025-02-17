@@ -26,6 +26,14 @@ const ThemeSwitch = () => {
       />
       <Label htmlFor="theme-switch">{titlecase(resolvedTheme)} mode</Label>
     </div>
+
+    // <select value={resolvedTheme} onChange={(e) => setTheme(e.target.value)}>
+    //   {useListRenderer(themes, (item, index) => (
+    //     <option value={item} key={index}>
+    //       {item}
+    //     </option>
+    //   ))}
+    // </select>
   );
 };
 
