@@ -3,18 +3,22 @@
 import Image from 'next/image';
 import { WishlistSheet } from '@/components/wishlistSheet';
 import Link from 'next/link';
+import ThemeSwitch from '@/components/themeSwitch';
+import { useTheme } from 'next-themes';
 
 interface HeaderTopProps {
   sticky?: boolean;
 }
 
 export function HeaderTop({ sticky = false }: HeaderTopProps) {
+  const { resolvedTheme } = useTheme();
+
   return (
-    <header className={`container mx-auto bg-white ${sticky ? 'sticky top-0 z-20' : ''}`}>
+    <header className={`container mx-auto ${sticky ? 'sticky top-0 z-20' : ''}`}>
       <nav className="flex justify-between py-5 row">
         <Link href="/" aria-label="home">
           <Image
-            src="/acme-logo-1.svg"
+            src={resolvedTheme === 'dark' ? '/acme-logo-1-dark.svg' : '/acme-logo-1.svg'}
             width={100}
             height={36}
             alt="Acme logo"
@@ -23,6 +27,7 @@ export function HeaderTop({ sticky = false }: HeaderTopProps) {
             aria-label="brand logo"
           />
         </Link>
+        <ThemeSwitch />
         <WishlistSheet />
       </nav>
     </header>

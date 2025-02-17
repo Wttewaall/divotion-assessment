@@ -15,7 +15,7 @@ export function ProductsList() {
   }, []);
 
   return (
-    <section aria-role="section" data-testid="products-list" className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    <section data-testid="products-list" className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {useListRenderer(products, (product, index) => (
         <ProductCard
           key={product.id}
